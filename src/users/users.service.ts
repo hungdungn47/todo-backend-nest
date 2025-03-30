@@ -37,8 +37,8 @@ export class UsersService {
       throw new BadRequestException('Incorrect password!')
     }
 
-    const accessToken = this.jwtService.generateAccessToken({ email: checkUser.email, userId: checkUser._id })
-    const refreshToken = this.jwtService.generateRefreshToken({ email: checkUser.email, userId: checkUser._id })
+    const accessToken = this.jwtService.generateAccessToken({ email: checkUser.email, _id: checkUser._id })
+    const refreshToken = this.jwtService.generateRefreshToken({ email: checkUser.email, _id: checkUser._id })
 
     return {
       accessToken,

@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 
 import { MongooseModule } from '@nestjs/mongoose';
+import { TasksModule } from './tasks/tasks.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,7 +16,8 @@ import { MongooseModule } from '@nestjs/mongoose';
       useFactory: () => ({
         uri: process.env.MONGODB_CONNECTION
       })
-    })
+    }),
+    TasksModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,8 +24,8 @@ export class JwtService {
 
   refreshToken(token: string): string {
     try {
-      const decoded = verify(token, this.secretKey) as { email: string, userId: string }
-      const newAccessToken = this.generateAccessToken({ email: decoded.email, userId: decoded.userId })
+      const decoded = verify(token, this.secretKey) as { email: string, _id: string }
+      const newAccessToken = this.generateAccessToken({ email: decoded.email, _id: decoded._id })
       return newAccessToken
     } catch (error: any) {
       throw new UnauthorizedException("Your token is invalid!")
