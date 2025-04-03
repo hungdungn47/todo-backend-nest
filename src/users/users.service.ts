@@ -20,8 +20,8 @@ export class UsersService {
       throw new BadRequestException('This user has already been registered!')
     }
 
-    const createdUser = new this.userModel(createUserDto)
-    return createdUser.save();
+    const createdUser = await this.userModel.create(createUserDto)
+    return createdUser.toObject();
   }
 
   async login(email: string, password: string): Promise<any> {
@@ -48,5 +48,14 @@ export class UsersService {
 
   async refreshToken(refreshToken: string): Promise<string> {
     return await this.jwtService.refreshToken(refreshToken)
+  }
+
+  async getUserInfo(userId: string): Promise<any> {
+    const user = await this.userModel.findById(userId)
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
+    const { password, ...otherInfo } = user.toObject()
+    return otherInfo
   }
 }

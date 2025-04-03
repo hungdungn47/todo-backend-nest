@@ -1,4 +1,5 @@
-import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateTaskDto {
 
@@ -16,5 +17,6 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsDate({ message: "dueDate must be date instance with form yyyy/MM/dd" })
+  @Type(() => Date)
   dueDate: Date
 }

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { LoginUserDto } from './dto/login-user.dto';
+import { AuthGuard } from './auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -15,9 +16,11 @@ export class UsersController {
     const salt = genSaltSync(10)
     const hashedPassword = hashSync(createUserDto.password, salt)
     createUserDto.password = hashedPassword
+    let userData = await this.usersService.register(createUserDto)
+    const { password, ...returnData } = userData
     return {
       message: "Created user",
-      user: await this.usersService.register(createUserDto)
+      user: returnData
     }
   }
 
@@ -36,6 +39,17 @@ export class UsersController {
     return {
       message: 'Refreshed token successfully!',
       accessToken: newToken
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('info')
+  async getUserInfo(@Request() req: Request) {
+    const userId = req['user']._id
+    const userInfo = await this.usersService.getUserInfo(userId)
+    return {
+      message: 'Get user info',
+      userInfo
     }
   }
 }

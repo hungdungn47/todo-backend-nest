@@ -15,6 +15,9 @@ export class Task {
   @Prop()
   tags: [string]
 
+  @Prop({ default: 'Not started' })
+  status: string
+
   @Prop()
   dueDate: Date
 }
