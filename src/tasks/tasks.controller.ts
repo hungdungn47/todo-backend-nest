@@ -3,6 +3,7 @@ import { TasksService } from './tasks.service';
 import { AuthGuard } from 'src/services/auth.guard';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('tasks')
 export class TasksController {
@@ -10,8 +11,8 @@ export class TasksController {
 
   @UseGuards(AuthGuard)
   @Get('')
-  async findAll(@Request() req: Request) {
-    const tasks = await this.tasksService.findAll(req['user']._id as string)
+  async findAll(@User('_id') userId: string) {
+    const tasks = await this.tasksService.findAll(userId)
     return {
       message: "Get all tasks",
       tasks
@@ -20,8 +21,7 @@ export class TasksController {
 
   @UseGuards(AuthGuard)
   @Post('')
-  async createTask(@Request() req: Request, @Body() createTaskDto: CreateTaskDto) {
-    const userId = req['user']._id as string
+  async createTask(@User('_id') userId: string, @Body() createTaskDto: CreateTaskDto) {
     const createdTask = await this.tasksService.createTask(userId, createTaskDto)
     return {
       message: "Created task",
@@ -31,8 +31,7 @@ export class TasksController {
 
   @UseGuards(AuthGuard)
   @Put(':id')
-  async updateTask(@Param('id') id: string, @Request() req: Request, @Body() updateTaskDto: UpdateTaskDto) {
-    const userId = req['user']._id as string
+  async updateTask(@Param('id') id: string, @User('_id') userId: string, @Body() updateTaskDto: UpdateTaskDto) {
     const updatedTask = await this.tasksService.updateTask(id, userId, updateTaskDto)
     return {
       message: "Updated task",
@@ -42,8 +41,7 @@ export class TasksController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async deleteTask(@Param('id') id: string, @Request() req: Request) {
-    const userId = req['user']._id as string
+  async deleteTask(@Param('id') id: string, @User('_id') userId: string) {
     const deletedTask = await this.tasksService.deleteTask(id, userId)
     return {
       message: "Deleted task",

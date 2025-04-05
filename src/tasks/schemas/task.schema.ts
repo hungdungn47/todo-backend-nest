@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
+import { TaskStatus } from "../enums/task.enum";
 
 @Schema({ timestamps: true })
 export class Task {
@@ -15,7 +16,7 @@ export class Task {
   @Prop()
   tags: [string]
 
-  @Prop({ default: 'Not started' })
+  @Prop({ enum: TaskStatus, default: TaskStatus.NotStarted })
   status: string
 
   @Prop()
