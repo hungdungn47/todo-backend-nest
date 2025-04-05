@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
 
-@Schema()
+@Schema({ timestamps: true })
 export class Task {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: mongoose.Types.ObjectId
@@ -20,6 +20,12 @@ export class Task {
 
   @Prop()
   dueDate: Date
+
+  @Prop()
+  createdAt: Date
+
+  @Prop()
+  updatedAt: Date
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task)

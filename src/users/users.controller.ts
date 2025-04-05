@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { LoginUserDto } from './dto/login-user.dto';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from '../services/auth.guard';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -44,8 +44,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get('info')
-  async getUserInfo(@Request() req: Request) {
-    const userId = req['user']._id
+  async getUserInfo(@User('_id') userId: string) {
     const userInfo = await this.usersService.getUserInfo(userId)
     return {
       message: 'Get user info',

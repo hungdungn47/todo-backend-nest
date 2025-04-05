@@ -4,9 +4,9 @@ import { sign, verify } from "jsonwebtoken";
 
 @Injectable()
 export class JwtService {
-  private secretKey;
+  private secretKey: string;
   constructor(private configService: ConfigService) {
-    this.secretKey = configService.get<string>("JWT_SECRET")
+    this.secretKey = configService.get<string>("JWT_SECRET") as string
   }
   generateAccessToken(payload: any): string {
     const token = sign(payload, this.secretKey as string, {
