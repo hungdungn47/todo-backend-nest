@@ -2,7 +2,6 @@ import { Type } from "class-transformer";
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateTaskDto {
-
   @IsString()
   @IsNotEmpty()
   title: string

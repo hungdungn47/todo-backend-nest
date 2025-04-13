@@ -5,7 +5,7 @@ import { User } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { compareSync } from 'bcrypt-ts';
-import { JwtService } from './jwtServices/jwt.service';
+import { JwtService } from '../services/jwt.service'
 
 @Injectable()
 export class UsersService {
